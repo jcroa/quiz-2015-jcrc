@@ -1,0 +1,51 @@
+@charset "utf-8";
+/* CSS Document */
+
+div#mainContent {
+	padding-top: 0px;
+	padding-left: 30px; /* mayor que el ancho del panel izq */
+	padding-right: 240px; /* mayor o igual que pane, der */
+	padding-bottom: 10px;
+}
+
+div.titulo-media {
+	padding:4px;
+	padding-left:16px;
+	font-size:12px; 
+	font-family:Verdana, Geneva, sans-serif;
+	background-color:#CCF;
+	margin-top: 4px;
+	cursor:pointer;
+	background: linear-gradient(top, #CdF, #eef, #CdF);
+	background: -webkit-linear-gradient(top, #CdF, #eef, #CdF);
+	background: -moz-linear-gradient(top, #CdF, #eef, #CdF);
+	background: -o-linear-gradient(top, #CdF, #eef, #CdF);
+	border-radius: 8px 8px 0px 0px;
+	-webkit-border-radius: 8px 8px 0px 0px;
+	-moz-border-radius: 8px 8px 0px 0px;
+	font-weight:bold;
+}
+
+div.titulo-media:hover {
+	background-color:#cff; 
+	background: linear-gradient(top, #fb8, #feb, #fb8);
+	background: -webkit-linear-gradient(top, #fb8, #feb, #fb8);
+	background: -moz-linear-gradient(top, #fb8, #feb, #fb8);
+	background: -o-linear-gradient(top, #fb8, #feb, #fb8);
+}
+
+div.contenido-media {
+	padding:10px;
+	background-color:#f0f8f8; 
+    border-style: solid;
+	border-width: 1px;
+	border-color: #cccccc;
+	margin-bottom: 10px;
+	border-radius: 0px 0px 8px 8px;
+	-webkit-border-radius: 0px 0px 8px 8px;
+	-moz-border-radius: 0px 0px 8px 8px;
+}
+
+div.contenido-media a{ 
+    color: #09C;
+}
