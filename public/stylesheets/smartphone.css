@@ -16,3 +16,7 @@ h2 span, section h3 {
 body                { font-size: xx-large; }
 footer, input       { font-size: large; }
 
+.author p {
+    font-size: large;
+}
+

@@ -18,6 +18,6 @@ router.get('/', function(req, res) {
 // primera pregunta
 router.get('/quizes/question', quizController.question);
 router.get('/quizes/answer',   quizController.answer);
-
+router.get('/author',   quizController.author);
 
 module.exports = router;
