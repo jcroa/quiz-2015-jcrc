@@ -11,7 +11,7 @@ var quizController = require('../controllers/quiz_controller');
 /* GET home page. */
 router.get('/', function(req, res) {
   //  views/index.ejs  más parámetros.
-  res.render('index', { title: 'Quiz demo' });
+  res.render('index', { title: 'Quiz' });
 });
 
 
