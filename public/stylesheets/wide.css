@@ -11,6 +11,8 @@ nav  {
   height: 200px;
 }
 nav span  { 
+  display: block;
+  text-align: left;
   margin: 0px 100px 0px 0px;
 }
 
