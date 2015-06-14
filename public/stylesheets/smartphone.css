@@ -1,0 +1,18 @@
+/* Estilos para pantalla pequeña como la de los smartphone */
+
+body   { 
+    background: #333; 
+}
+
+#page-wrap:after { 
+    content: "Smartphone Layout"; 
+}
+
+/* Se elimina texto secundario paratener más espacio */
+h2 span, section h3 { 
+    display: none; 
+}
+
+body                { font-size: xx-large; }
+footer, input       { font-size: large; }
+

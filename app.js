@@ -6,7 +6,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var partials = require("express-partials");
+var partials  = require("express-partials");
 
 // importación de enrutadores
 var routes = require('./routes/index');

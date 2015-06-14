@@ -1,11 +1,38 @@
-*                                     { margin: 0; padding: 0; }
-body                               { font: 16px Georgia, serif; }
+/* Hoja de estilo por defecto */
 
-#page-wrap                  { margin: 2% auto; color: white; }
-#page-wrap > .main   { border: 1px solid #999; padding: 1%; 
-	                 margin-bottom: 1px; color: black;}
+*  { 
+  margin: 0; 
+  padding: 0;
+}
 
-section > div                 { padding: 20px; }
-header, nav, section  { background: #eee; text-align: center;}
-footer                            { background: #eee; text-align: center;}
-nav span                       { margin: 0px 10px 0px 0px;}
+body  { 
+  font: 16px Georgia, serif; 
+}
+
+header, nav, section , footer  { 
+  background: #eee; 
+  text-align: center;
+}
+
+#page-wrap { 
+  margin: 2% auto; 
+  color: white; 
+}
+
+#page-wrap > .main   { 
+  border: 1px solid #999; 
+  padding: 1%; 
+  margin-bottom: 1px; 
+  color: black;
+}
+
+section > div  { 
+  padding: 20px; 
+}
+
+nav span  { 
+  margin: 0px 10px 0px 0px;
+}
+
+
+
