@@ -4,15 +4,45 @@
 
 // Importación de módulos
 var path = require("path");
+
+
+console.log("models.js - DATABASE_URL : " + process.env.DATABASE_URL);
+
+// Postgres DATABASE_URL = postgres://rkjqotjtqcmjmn:SnJ09qa_ABejE1i1SjMBiqU24n@ec2-54-83-43-118.compute-1.amazonaws.com:5432/d578grmpsb38gc
+// SQLite   DATABASE_URL = sqlite://:@:/
+var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
+var DB_name  = (url[6]||null);
+var user     = (url[2]||null);
+var pwd      = (url[3]||null);
+var protocol = (url[1]||null);
+var dialect  = (url[1]||null);
+var port     = (url[5]||null);
+var host     = (url[4]||null);
+var storage  = process.env.DATABASE_STORAGE;
+
+// Carga modelo ORM
 var Sequelize = require("Sequelize"); // modelo ORM
+
+// Usar BBDD SQLite o Postgres
+var sequelize = new Sequelize(DB_name, user, pwd, 
+    { 
+        dialect:  protocol,
+        protocol: protocol,
+        port:     port,
+        host:     host,
+        storage:  storage,  // solo SQLite (.env)
+        omitNull: true      // solo Postgres
+    }      
+);
 
 // Usar BBDD SqLite. Guardado en fichero quiz.sqlite
 var sequelize = new Sequelize(null, null, null,
         {dialect: "sqlite", storage: "quiz.sqlite"}
     );
     
-// Imortar la definición de la tabla Quiz en quiz.js
-var Quiz = sequelize.import(path.join(__dirname, "quiz"));
+// Importar la definición de la tabla Quiz en quiz.js
+var quizPath = path.join(__dirname, "quiz");
+var Quiz = sequelize.import(quizPath);
 
 exports.Quiz = Quiz;
 
