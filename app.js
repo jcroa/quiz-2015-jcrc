@@ -1,5 +1,5 @@
 
-// importación de paquetes de terceros con middlewares
+// Importación de paquetes de terceros con middlewares
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -8,10 +8,10 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var partials  = require("express-partials");
 
-// importación de enrutadores
+// Importación de enrutadores
 var routes = require('./routes/index');
 
-// creación de aplicación
+// Instanciación de la aplicación principal. Objeto app
 var app = express();
 
 // view engine setup

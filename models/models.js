@@ -12,7 +12,7 @@ var sequelize = new Sequelize(null, null, null,
     );
     
 // Imortar la definición de la tabla Quiz en quiz.js
-var Quiz = sequelize.import(path.join(__dirname, "quiz");
+var Quiz = sequelize.import(path.join(__dirname, "quiz"));
 
 exports.Quiz = Quiz;
 
