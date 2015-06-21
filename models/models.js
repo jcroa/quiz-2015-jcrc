@@ -86,6 +86,6 @@ sequelize.sync().success(function() {
     });
 });
 
-console.log("models.js - Init OK ");
+console.log("models.js - Init OK  ");
 
   
