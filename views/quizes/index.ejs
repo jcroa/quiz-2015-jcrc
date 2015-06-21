@@ -1,9 +1,18 @@
+        
+        <p class="title2" >
+        <% if (!filter) { %>
+           Listado completo
+        <% } else { %>
+           Preguntas conteniendo : [<span style="color:#4040b0"> <%= filter %> </span>]
+        <% } %>
+        </p>
+        
         <table>        
         <% var i; for(i=0; i<quizes.length; i++) { 
                var quiz = quizes[i];
         %>
             <tr>
-               <td>
+               <td class="item-pregunta">
                   <a href="<%= quiz.id %>"><%= quiz.pregunta %> </a>
                </td>
             </tr>

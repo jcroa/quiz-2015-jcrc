@@ -60,6 +60,14 @@ var ejemplosIniciales = [
     {
         pregunta: "Capital de Portugal",
         respuesta: "Lisboa"
+    },
+    {
+        pregunta: "Capital de España",
+        respuesta: "Madrid"
+    },
+    {
+        pregunta: "Capital de Francia",
+        respuesta: "París"
     }
 ];
 
