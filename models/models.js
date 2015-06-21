@@ -58,7 +58,7 @@ var ejemplosIniciales = [
         respuesta: "Roma"
     },
     {
-        pregunta: "Capital de Protugal",
+        pregunta: "Capital de Portugal",
         respuesta: "Lisboa"
     }
 ];

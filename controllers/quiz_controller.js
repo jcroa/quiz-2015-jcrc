@@ -29,9 +29,19 @@ exports.load = function(req, res, next, quizId) {
 
 // GET /quizes/
 exports.index = function(req, res) {
-    models.Quiz.findAll().then(function(quizes) {
+    // parámetro search es una opción.
+    var text = req.query.search;
+    var filter = {}; // sin filtro
+    if (text) {
+        var containing = text.replace(" ", "%");
+        filter = { where: [" pregunta like ?", '%' + containing + '%' ] };
+        console.log("index - preguntas con filtro: " + containing);
+    } else {
+        console.log("index - preguntas sin filtro");
+    }
+    models.Quiz.findAll(filter).then(function(quizes) {
         // Manejo de evento success de findAll()
-        res.render('quizes/index', { quizes: quizes });
+        res.render('quizes/index', { quizes: quizes, filter: text });
     });
 };
 
