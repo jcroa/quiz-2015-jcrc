@@ -34,7 +34,9 @@ exports.index = function(req, res) {
     var filter = {}; // sin filtro
     if (text) {
         var containing = text.replace(" ", "%");
-        filter = { where: [" pregunta like ?", '%' + containing + '%' ] };
+        filter = { 
+            where: [" pregunta like ?", '%' + containing + '%' ],
+            order: "pregunta ASC" };
         console.log("index - preguntas con filtro: " + containing);
     } else {
         console.log("index - preguntas sin filtro");

@@ -54,15 +54,10 @@ header, nav, section, footer   {
    font-size: .8em;
    color: #f0f0f0;
 }
-<<<<<<< HEAD
+
 #page-wrap > section.main,
 #page-wrap > nav.main  { 
-  padding: 0px; 
-=======
-#page-wrap > section.main  { 
-  padding: 20px; 
->>>>>>> ef90809dc2adecda8991ecd9a36851f805371d0a
-  padding-bottom: 2em;
+ padding-bottom: 2em;
 }
 
 nav span  { 
@@ -74,12 +69,22 @@ table  {
 }
 #page-wrap > section.main td.item-pregunta {
    padding: .2em;
-   text-align: left;
+   text-align: center;
 }
 
 p.title2 {
     color: #505060;
     padding-bottom: .8em;
+}
+
+form  {
+   color: #707080;
+   font-size: .9em;
+}
+form p.enunciado {
+   color: #204060;
+   font-size: 1.4em;
+   padding: 1em;
 }
 
 

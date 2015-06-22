@@ -16,9 +16,9 @@ router.get('/', function(req, res) {
   res.render('index', { title: 'Quiz' });
 });
 
-router.get('/searching', function(req, res) {
+router.get('/quizes/searching', function(req, res) {
   //  quizes/searching.ejs  más parámetros.
-  res.render('searching', {});
+  res.render('quizes/searching', {});
 });
 
 // Autoload para comandos get que incluyan :quizId
