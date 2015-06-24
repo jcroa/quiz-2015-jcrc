@@ -60,8 +60,37 @@ exports.answer = function(req, res) {
     var resultado = 'Incorrecto';
     if (req.query.respuesta === req.quiz.respuesta) {
         resultado = 'Correcto';
-    } 
+        console.log("Correcto:.  [" + req.quiz.respuesta + "]");
+    } else {
+        console.log("Incorrecto:. No es : [" + req.query.respuesta + 
+            "]  Era: [" + req.quiz.respuesta + "]");
+    }
     res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado});
+};
+
+// GET /quizes/new
+exports.new = function(req, res) {
+    // previo load
+    var quizVacia = models.Quiz.build( // crea objeto Quiz
+        {pregunta: "Pregunta", respuesta: "Respuesta"}
+    );
+    
+    res.render('quizes/new', {quiz: quizVacia});
+};
+
+// GET /quizes/new
+exports.create = function(req, res) {
+    // previo load
+    var quizNueva = models.Quiz.build(req.body.quiz);
+    // guarda en Db datos recibidos del formulario como objeto quiz
+    quizNueva.save( 
+        // solo estos dos campos
+        {fields:["pregunta", "respuests"]}
+    ).then(
+        function() {
+            res.redirect("/quizes"); // redirección a lista de preguntas
+        }
+    ); 
 };
 
 exports.author = function(req, res) {

@@ -15,7 +15,22 @@
                <td class="item-pregunta">
                   <a href="/quizes/<%= quiz.id %>"><%= quiz.pregunta %> </a>
                </td>
+               <td class="admin-button">
+                  <a href="/quizes/<%= quiz.id %>/edit">editar</a>
+               </td>
+               <td class="admin-button">
+                  <a href="/quizes/<%= quiz.id %>/delete">borrar</a>
+               </td>
             </tr>
         <% } %>
+            <tr>
+               <td> 
+                  <a href="/quizes/new">
+                     <button type="button">Crear pregunta</button>
+                  </a>
+                </td>
+            </tr>
         </table>
+
+
 
