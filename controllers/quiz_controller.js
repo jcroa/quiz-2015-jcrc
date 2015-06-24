@@ -68,7 +68,7 @@ exports.answer = function(req, res) {
     res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado});
 };
 
-// GET /quizes/new
+// GET /quizes/new muestra formulario de inserción de pregunta/respuesta
 exports.new = function(req, res) {
     // previo load
     var quizVacia = models.Quiz.build( // crea objeto Quiz
@@ -78,14 +78,14 @@ exports.new = function(req, res) {
     res.render('quizes/new', {quiz: quizVacia});
 };
 
-// GET /quizes/new
+// GET /quizes/create  añade una nueva pregunta a la base de datos
 exports.create = function(req, res) {
     // previo load
     var quizNueva = models.Quiz.build(req.body.quiz);
     // guarda en Db datos recibidos del formulario como objeto quiz
     quizNueva.save( 
         // solo estos dos campos
-        {fields:["pregunta", "respuests"]}
+        {fields:["pregunta", "respuesta"]}
     ).then(
         function() {
             res.redirect("/quizes"); // redirección a lista de preguntas
