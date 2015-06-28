@@ -70,7 +70,7 @@ exports.answer = function(req, res) {
 
 // GET /quizes/new muestra formulario de inserción de pregunta/respuesta
 exports.new = function(req, res) {
-    // previo load
+    // creamos fila con datos por defecto
     var quizVacia = models.Quiz.build( // crea objeto Quiz
         {pregunta: "Pregunta", respuesta: "Respuesta"}
     );
@@ -129,6 +129,81 @@ exports.create = function(req, res) {
     
 };
 
+// GET /quizes/:id/edit  muestra formulario de edición de pregunta/respuesta
+exports.edit = function(req, res) {
+    // previo load
+    var quiz = req.quiz;
+    
+    res.render('quizes/edit', {quiz: quiz, errors: [] });
+};
+
+// GET /quizes/update  modifica una pregunta a la base de datos
+exports.update = function(req, res) {
+    console.log("------ Validando " + JSON.stringify(req.body.quiz));
+    // creamos datos para registrar
+    req.quiz.pregunta = req.body.quiz.pregunta;
+    req.quiz.respuesta = req.body.quiz.respuesta;
+    
+    var editedQuiz = req.quiz;
+    
+    try {
+        // probando versión con then
+        editedQuiz.validate().then(_validationHandler);
+    } catch (err) {
+        console.log("-- **  AVISO: no funciona Sequelize con 'then'");
+    }
+    
+    // probamos validación de la forma antigua
+    var result = editedQuiz.validate();
+    if (result) {
+        // hay errores
+        var errors = [];
+        for (var key in result) {
+            if (result.hasOwnProperty(key)) {
+                var err = {"field": key, message: result[key]};
+                errors.push(err);
+            }
+        }
+        _validationHandler({message: "Pregunta no válida", errors: errors});
+    } else {
+        // no hay errores
+        _validationHandler(null);
+    }
+    
+    function _validationHandler(err) {
+        console.log("result validar " + JSON.stringify(err));
+        // comprobamos resulado de validación
+        if (err) {
+            // existen datos no válidos.
+            res.render("quizes/new", {quiz: editedQuiz, errors: err.errors});
+        } else {
+            // datos de la pregunta correctos. Procedemos a guardar
+            editedQuiz.save( 
+                // solo estos dos campos
+                {fields:["pregunta", "respuesta"]}
+            ).then(
+                function() {
+                    res.redirect("/quizes"); // redirección a lista de preguntas
+                }
+            ); 
+        }
+    }
+    
+};
+
+// delete /quizes/:id  elimina una pregunta de la base de datos
+exports.destroy = function(req, res) {
+    // previo load
+    req.quiz.destroy().then(
+        function() {
+            console.log("Pregunta borrada: [" + req.quiz.pregunta + "]");
+            res.redirect("/quizes");
+        }
+    ).catch(
+        function(error) { next(error); }
+    );
+ };
+    
 exports.author = function(req, res) {
    // public/author.ejs
    res.render('author', {});

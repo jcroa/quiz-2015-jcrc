@@ -1,6 +1,7 @@
 
-// Definición del modelo de Quiz
+// Definición del modelos de datos de Quiz
 
+// Quiz: Tabla de preguntas
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("Quiz",
         {
@@ -14,3 +15,6 @@ module.exports = function(sequelize, DataTypes) {
             }
         });
 };        
+
+
+

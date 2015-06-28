@@ -52,23 +52,11 @@ var Quiz = sequelize.import(quizPath);
 exports.Quiz = Quiz;
 
 // Datos a añadir si la tabla está nicialmente vacía.
-var ejemplosIniciales = [
-    {
-        pregunta: "Capital de Italia",
-        respuesta: "Roma"
-    },
-    {
-        pregunta: "Capital de Portugal",
-        respuesta: "Lisboa"
-    },
-    {
-        pregunta: "Capital de España",
-        respuesta: "Madrid"
-    },
-    {
-        pregunta: "Capital de Francia",
-        respuesta: "París"
-    }
+var ejemplosPreguntas = [
+    { pregunta: "Capital de Italia", respuesta: "Roma" },
+    { pregunta: "Capital de Portugal", respuesta: "Lisboa" },
+    { pregunta: "Símbolo del helio", respuesta: "he" },
+    { pregunta: "Unidad de información digital de 8 bits", respuesta: "byte" }
 ];
 
 // Creamos e inicializamos tabla de preguntas en la base de datos
@@ -78,10 +66,11 @@ sequelize.sync().success(function() {
         // manejador de evento success de count(...)
         if (count===0) {
             // tabla está vacía: Añadimos datos de prueba
-            Quiz.bulkCreate(ejemplosIniciales).then(function() {
+            Quiz.bulkCreate(ejemplosPreguntas).then(function() {
                // manejador de evento success de create(...)
-               console.log("Base de datos inicializada con un registro");
+               console.log("Base de datos inicializada con un ejemplos iniciales");
             });
+
         }
     });
 });
