@@ -84,24 +84,25 @@ exports.create = function(req, res) {
     // creamos datos para registrar
     var quizNueva = models.Quiz.build(req.body.quiz);
     
-    var result = quizNueva.validate();
+    try {
+        // probando versión con then
+        quizNueva.validate().then(_validationHandler);
+    } catch (err) {
+        console.log("-- **  AVISO: no funciona Sequelize con 'then'");
+    }
     
+    // probamos validación de la forma antigua
+    var result = quizNueva.validate();
     if (result) {
         // hay errores
-        if (result.then) {
-            // versión que soporta then
-            console.log("SIN IMPLEMENTAR ");
-            return; 
-        } else {
-            var errors = [];
-            for (var key in result) {
-                if (result.hasOwnProperty(key)) {
-                    var err = {"field": key, message: result[key]};
-                    errors.push(err);
-                }
+        var errors = [];
+        for (var key in result) {
+            if (result.hasOwnProperty(key)) {
+                var err = {"field": key, message: result[key]};
+                errors.push(err);
             }
-            _validationHandler({message: "Pregunta no válida", errors: errors});
-        }   
+        }
+        _validationHandler({message: "Pregunta no válida", errors: errors});
     } else {
         // no hay errores
         _validationHandler(null);
