@@ -13,7 +13,7 @@ console.log("Router. Iniciando ...");
 /* GET home page. */
 router.get('/', function(req, res) {
   //  views/index.ejs  más parámetros.
-  res.render('index', { title: 'Quiz' });
+  res.render('index', { title: 'Quiz', errors: [] });
 });
 
 router.get('/quizes/searching', function(req, res) {

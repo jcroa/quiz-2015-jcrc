@@ -43,7 +43,7 @@ exports.index = function(req, res) {
     }
     models.Quiz.findAll(filter).then(function(quizes) {
         // Manejo de evento success de findAll()
-        res.render('quizes/index', { quizes: quizes, filter: text });
+        res.render('quizes/index', { quizes: quizes, filter: text, errors: [] });
     });
 };
 
@@ -51,7 +51,7 @@ exports.index = function(req, res) {
 exports.show = function(req, res) {
     // previo load
     console.log("Controller: pregunta pedida: " + req.quiz.id);
-    res.render('quizes/show', {quiz: req.quiz});
+    res.render('quizes/show', {quiz: req.quiz, errors: []});
 };
 
 // GET /quizes/answer
@@ -65,7 +65,7 @@ exports.answer = function(req, res) {
         console.log("Incorrecto:. No es : [" + req.query.respuesta + 
             "]  Era: [" + req.quiz.respuesta + "]");
     }
-    res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado});
+    res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado, errors: []});
 };
 
 // GET /quizes/new muestra formulario de inserción de pregunta/respuesta
@@ -75,22 +75,57 @@ exports.new = function(req, res) {
         {pregunta: "Pregunta", respuesta: "Respuesta"}
     );
     
-    res.render('quizes/new', {quiz: quizVacia});
+    res.render('quizes/new', {quiz: quizVacia, errors: [] });
 };
 
 // GET /quizes/create  añade una nueva pregunta a la base de datos
 exports.create = function(req, res) {
-    // previo load
+    console.log("------ Validando " + JSON.stringify(req.body.quiz));
+    // creamos datos para registrar
     var quizNueva = models.Quiz.build(req.body.quiz);
-    // guarda en Db datos recibidos del formulario como objeto quiz
-    quizNueva.save( 
-        // solo estos dos campos
-        {fields:["pregunta", "respuesta"]}
-    ).then(
-        function() {
-            res.redirect("/quizes"); // redirección a lista de preguntas
+    
+    var result = quizNueva.validate();
+    
+    if (result) {
+        // hay errores
+        if (result.then) {
+            // versión que soporta then
+            console.log("SIN IMPLEMENTAR ");
+            return; 
+        } else {
+            var errors = [];
+            for (var key in result) {
+                if (result.hasOwnProperty(key)) {
+                    var err = {"field": key, message: result[key]};
+                    errors.push(err);
+                }
+            }
+            _validationHandler({message: "Pregunta no válida", errors: errors});
+        }   
+    } else {
+        // no hay errores
+        _validationHandler(null);
+    }
+    
+    function _validationHandler(err) {
+        console.log("result validar " + JSON.stringify(err));
+        // comprobamos resulado de validación
+        if (err) {
+            // existen datos no válidos.
+            res.render("quizes/new", {quiz: quizNueva, errors: err.errors});
+        } else {
+            // datos de la pregunta correctos. Procedemos a guardar
+            quizNueva.save( 
+                // solo estos dos campos
+                {fields:["pregunta", "respuesta"]}
+            ).then(
+                function() {
+                    res.redirect("/quizes"); // redirección a lista de preguntas
+                }
+            ); 
         }
-    ); 
+    }
+    
 };
 
 exports.author = function(req, res) {

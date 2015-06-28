@@ -96,3 +96,7 @@ form p.enunciado {
 #page-wrap .admin-button a:hover {
    color:#2042b0;
 }
+
+#ErrorMsgs {
+    color: #a00000;
+}
