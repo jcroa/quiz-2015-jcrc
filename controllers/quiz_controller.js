@@ -5,7 +5,7 @@ var models = require("../models/models.js");
 
 // Autoload - factoriza el c´çodigo si ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
-    console.log("load - buscando quiizId = " + quizId + " ...");
+    console.log("load - buscando quizId = " + quizId + " ...");
     models.Quiz.find(quizId).then(
         // Manejo de evento success de find()
         function(quiz) {
@@ -13,7 +13,24 @@ exports.load = function(req, res, next, quizId) {
                 // agregamos al objeto Request:
                 req.quiz = quiz;
                 console.log("load - encontrado " + quiz.pregunta);
-                next();
+                
+                models.Tema.find({ where: { alias: quiz.fk_tema } }).then(
+                    function(row) {
+                        if (!row) {
+                            tema = {alias:null, nombre: "Otros"};
+                        } else {
+                            tema = row;
+                        }
+                        // agregamos a quiz info sobre el tema
+                        quiz._tema = row;
+                        console.log("load - tema  " + quiz._tema.nombre);
+                        next();
+                    }
+                ).catch(
+                   function(err) { next(err); }
+                );
+                
+               
             } else {
                 next(new Error("No existe quizId=" + quizId));
             }
@@ -51,7 +68,9 @@ exports.index = function(req, res) {
 exports.show = function(req, res) {
     // previo load
     console.log("Controller: pregunta pedida: " + req.quiz.id);
-    res.render('quizes/show', {quiz: req.quiz, errors: []});
+    console.log("Controller: tema pedido: " + req.quiz._tema.nombre);
+    
+    res.render('quizes/show', {quiz: req.quiz, errors: [] });
 };
 
 // GET /quizes/answer
@@ -72,10 +91,15 @@ exports.answer = function(req, res) {
 exports.new = function(req, res) {
     // creamos fila con datos por defecto
     var quizVacia = models.Quiz.build( // crea objeto Quiz
-        {pregunta: "Pregunta", respuesta: "Respuesta"}
+        {pregunta: "Pregunta", respuesta: "Respuesta", fk_tema: "ocio"}
     );
     
-    res.render('quizes/new', {quiz: quizVacia, errors: [] });
+    models.Tema.findAll().then(
+        // Manejo de evento success de find()
+        function(rows) {
+            res.render('quizes/new', {quiz: quizVacia, temas: rows, errors: [] });
+        }
+    );
 };
 
 // GET /quizes/create  añade una nueva pregunta a la base de datos
@@ -118,7 +142,7 @@ exports.create = function(req, res) {
             // datos de la pregunta correctos. Procedemos a guardar
             quizNueva.save( 
                 // solo estos dos campos
-                {fields:["pregunta", "respuesta"]}
+                {fields:["pregunta", "respuesta", "fk_tema"]}
             ).then(
                 function() {
                     res.redirect("/quizes"); // redirección a lista de preguntas
@@ -134,7 +158,12 @@ exports.edit = function(req, res) {
     // previo load
     var quiz = req.quiz;
     
-    res.render('quizes/edit', {quiz: quiz, errors: [] });
+    models.Tema.findAll().then(
+        // Manejo de evento success de find()
+        function(rows) {
+            res.render('quizes/edit', {quiz: quiz, temas: rows, errors: [] });
+        }
+    );
 };
 
 // GET /quizes/update  modifica una pregunta a la base de datos
@@ -143,6 +172,7 @@ exports.update = function(req, res) {
     // creamos datos para registrar
     req.quiz.pregunta = req.body.quiz.pregunta;
     req.quiz.respuesta = req.body.quiz.respuesta;
+    req.quiz.fk_tema = req.body.quiz.fk_tema;
     
     var editedQuiz = req.quiz;
     
@@ -179,8 +209,8 @@ exports.update = function(req, res) {
         } else {
             // datos de la pregunta correctos. Procedemos a guardar
             editedQuiz.save( 
-                // solo estos dos campos
-                {fields:["pregunta", "respuesta"]}
+                // solo estos dos campos para la actualización
+                {fields:["pregunta", "respuesta", "fk_tema"]}
             ).then(
                 function() {
                     res.redirect("/quizes"); // redirección a lista de preguntas

@@ -49,14 +49,28 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 var quizPath = path.join(__dirname, "quiz");
 var Quiz = sequelize.import(quizPath);
 
+var temaPath = path.join(__dirname, "tema");
+var Tema = sequelize.import(temaPath);
+
+Quiz.belongsTo(Tema, {foreignKey: 'fk_tema'}); // 
+Tema.hasMany(Quiz);
+
+// exportaciones de referencias a tablas
+exports.Tema = Tema;
 exports.Quiz = Quiz;
 
+var ejemplosTemas = [
+   { alias: "huma", nombre: "Humanidades" },
+   { alias: "ccia", nombre: "Ciencia" },
+   { alias: "tcno", nombre: "Tecnología" },
+   { alias: "ocio", nombre: "Ocio" }
+];
 // Datos a añadir si la tabla está nicialmente vacía.
 var ejemplosPreguntas = [
-    { pregunta: "Capital de Italia", respuesta: "Roma" },
-    { pregunta: "Capital de Portugal", respuesta: "Lisboa" },
-    { pregunta: "Símbolo del helio", respuesta: "he" },
-    { pregunta: "Unidad de información digital de 8 bits", respuesta: "byte" }
+    { pregunta: "Capital de Italia", respuesta: "Roma", fk_tema: "huma"},
+    { pregunta: "Capital de Portugal", respuesta: "Lisboa", fk_tema: "huma"},
+    { pregunta: "Símbolo del helio", respuesta: "he", fk_tema: "ccia"},
+    { pregunta: "Unidad de información digital de 8 bits", respuesta: "byte", fk_tema: "tcno"},
 ];
 
 // Creamos e inicializamos tabla de preguntas en la base de datos
@@ -66,11 +80,14 @@ sequelize.sync().success(function() {
         // manejador de evento success de count(...)
         if (count===0) {
             // tabla está vacía: Añadimos datos de prueba
-            Quiz.bulkCreate(ejemplosPreguntas).then(function() {
-               // manejador de evento success de create(...)
-               console.log("Base de datos inicializada con un ejemplos iniciales");
+            Tema.bulkCreate(ejemplosTemas).then(function() {
+                // manejador de evento success de create(...)
+                console.log("Base de datos inicializada con temas");
+                Quiz.bulkCreate(ejemplosPreguntas).then(function() {
+                   // manejador de evento success de create(...)
+                   console.log("Base de datos inicializada con un ejemplos iniciales");
+                });
             });
-
         }
     });
 });

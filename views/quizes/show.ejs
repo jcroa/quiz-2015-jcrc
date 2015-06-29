@@ -1,4 +1,6 @@
-        <form method="get" action="<%= quiz.id %>/answer">        
+        
+        <p>Tema : <%= quiz._tema.nombre %> </p>
+        <form style="padding-top: 2em" method="get" action="<%= quiz.id %>/answer">        
           Pregunta: 
           <p class="enunciado"> <%= quiz.pregunta %> </p>
           <input type="text" name="respuesta" value="Responda aquí"/>

@@ -1,14 +1,31 @@
         
-        <div>  <!-- título y cajerín para la pegunta -->
-          <label for"preg" class="ren">Pregunta:</label>
+        <div>  <!-- título y cajetín para la pegunta -->
+          <label for="preg" class="ren">Pregunta:</label>
           <input type="text" id="preg" name="quiz[pregunta]" 
                  value="<%= quiz.pregunta %>"></input>
         </div>
-        <div>  <!-- título y cajerín para la respuesta -->
-          <label for"resp" class="ren">Respuesta:</label>
+        
+        <div>  <!-- título y cajetín para la respuesta -->
+          <label for="resp" class="ren">Respuesta:</label>
           <input type="text" id="resp" name="quiz[respuesta]" 
                  value="<%= quiz.respuesta %>"></input>
         </div>
+        
+        <div>  <!-- título y selector para el tema -->
+          <label for"temas" class="ren">Tema:</label>
+          <select id="temas" name="quiz[fk_tema]">
+              <% 
+              var quizTema = quiz._tema || {}; // puede ser vacío
+              var isSelected = (!quizTema.alias || "NULL" == quizTema.alias) ? "selected" : ""; 
+              %>
+              <option value="null" <%= isSelected %>>Otro</option>
+              <% for (var i=0; i<temas.length; i++) { 
+                 isSelected = (temas[i].alias == quizTema.alias) ? "selected" : ""; %>
+                 <option value="<%= temas[i].alias %>" <%= isSelected %> ><%= temas[i].nombre %></option>
+              <% } %>
+          </select>
+        </div>
+        
         <div>  <!-- botones de cancelar y aceptar -->
           <a href="/quizes"><button type="button">Cancelar</button></a>
           <input type="submit" value="Salvar">
