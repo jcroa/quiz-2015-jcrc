@@ -23,7 +23,7 @@ exports.load = function(req, res, next, quizId) {
                         }
                         // agregamos a quiz info sobre el tema
                         quiz._tema = row;
-                        console.log("load - tema  " + quiz._tema.nombre);
+                        console.log("load - tema  " + (quiz._tema && quiz._tema.nombre));
                         next();
                     }
                 ).catch(
@@ -68,7 +68,7 @@ exports.index = function(req, res) {
 exports.show = function(req, res) {
     // previo load
     console.log("Controller: pregunta pedida: " + req.quiz.id);
-    console.log("Controller: tema pedido: " + req.quiz._tema.nombre);
+    console.log("Controller: tema pedido: " + (req.quiz._tema && req.quiz._tema.nombre));
     
     res.render('quizes/show', {quiz: req.quiz, errors: [] });
 };
@@ -91,7 +91,7 @@ exports.answer = function(req, res) {
 exports.new = function(req, res) {
     // creamos fila con datos por defecto
     var quizVacia = models.Quiz.build( // crea objeto Quiz
-        {pregunta: "Pregunta", respuesta: "Respuesta", fk_tema: "ocio"}
+        {pregunta: "", respuesta: "", fk_tema: "ocio"}
     );
     
     models.Tema.findAll().then(
@@ -137,7 +137,12 @@ exports.create = function(req, res) {
         // comprobamos resulado de validación
         if (err) {
             // existen datos no válidos.
-            res.render("quizes/new", {quiz: quizNueva, errors: err.errors});
+            models.Tema.findAll().then(
+                // Manejo de evento success de find()
+                function(rows) {
+                    res.render('quizes/new', {quiz: quizNueva, temas: rows, errors: err.errors });
+                }
+            );
         } else {
             // datos de la pregunta correctos. Procedemos a guardar
             quizNueva.save( 
@@ -205,7 +210,12 @@ exports.update = function(req, res) {
         // comprobamos resulado de validación
         if (err) {
             // existen datos no válidos.
-            res.render("quizes/new", {quiz: editedQuiz, errors: err.errors});
+            models.Tema.findAll().then(
+                // Manejo de evento success de find()
+                function(rows) {
+                    res.render('quizes/new', {quiz: editedQuiz, temas: rows, errors: err.errors });
+                }
+            );
         } else {
             // datos de la pregunta correctos. Procedemos a guardar
             editedQuiz.save( 

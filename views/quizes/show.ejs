@@ -1,9 +1,9 @@
         
-        <p>Tema : <%= quiz._tema.nombre %> </p>
+        <p>Tema : <%= quiz._tema ? quiz._tema.nombre : "Otro" %> </p>
         <form style="padding-top: 2em" method="get" action="<%= quiz.id %>/answer">        
           Pregunta: 
           <p class="enunciado"> <%= quiz.pregunta %> </p>
-          <input type="text" name="respuesta" value="Responda aquí"/>
+          <input type="text" name="respuesta" value="" placeholder="Responda aquí"/>
           <input type="submit" value="Enviar">
         </form>
 

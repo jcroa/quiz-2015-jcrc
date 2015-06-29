@@ -16,10 +16,12 @@
                   <a href="/quizes/<%= quiz.id %>"><%= quiz.pregunta %> </a>
                </td>
                <td class="admin-button">
-                  <a href="/quizes/<%= quiz.id %>/edit">editar</a>
+                  <form method="get" action="/quizes/<%= quiz.id %>/edit">
+                     <button type="submit">editar</button>
+                  </form>
                </td>
                <td class="admin-button">
-                  <form method="post" action="/quizes/<%= quizes[i].id %>?_method=delete">
+                  <form method="post" action="/quizes/<%= quiz.id %>?_method=delete">
                      <button type="submit" 
                        onClick="return confirm('Borrar: <%= quizes[i].pregunta %>');">
                        borrar</button>

@@ -69,7 +69,7 @@ table  {
 }
 #page-wrap > section.main td.item-pregunta {
    padding: .2em;
-   text-align: center;
+   text-align: left;
 }
 
 p.title2 {
@@ -90,13 +90,18 @@ form p.enunciado {
    padding: 1em;
 }
 
-#page-wrap .admin-button a ,
-#page-wrap .admin-button a:visited{
+#page-wrap .admin-button button{
+   border-style: none;
+   text-decoration: underline;
+   padding: .4em;
+   padding-top: .6em;
+   background-color: transparent;
    color:#c0c0d0;
    font-size: .8em;
-   padding: 1em;
+   cursor: pointer;
 }
-#page-wrap .admin-button a:hover {
+
+#page-wrap .admin-button button:hover {
    color:#2042b0;
 }
 
