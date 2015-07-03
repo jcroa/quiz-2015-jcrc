@@ -5,14 +5,20 @@ var models = require("../models/models.js");
 
 // Autoload - factoriza el c´çodigo si ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
-    console.log("load - buscando quizId = " + quizId + " ...");
-    models.Quiz.find(quizId).then(
+    console.log("load - buscando quizId = " + quizId + " . y comentarios asociados");
+    models.Quiz.find(
+        {
+            where: { id: Number(quizId) },
+            include: [{ model: models.Comment }]
+        }
+    ).then(
         // Manejo de evento success de find()
         function(quiz) {
             if (quiz) {
                 // agregamos al objeto Request:
                 req.quiz = quiz;
-                console.log("load - encontrado " + quiz.pregunta);
+                console.log("load - encontrado " + quiz.pregunta + 
+                    " comments " + JSON.stringify(quiz));
                 
                 models.Tema.find({ where: { alias: quiz.fk_tema } }).then(
                     function(row) {
@@ -102,7 +108,7 @@ exports.new = function(req, res) {
     );
 };
 
-// GET /quizes/create  añade una nueva pregunta a la base de datos
+// POST /quizes/create  añade una nueva pregunta a la base de datos
 exports.create = function(req, res) {
     console.log("------ Validando " + JSON.stringify(req.body.quiz));
     // creamos datos para registrar

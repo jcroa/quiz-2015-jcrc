@@ -5,8 +5,9 @@ var router = express.Router();
 /// require módulos propios
 ///
 
-// primera pregunta
+// controladores
 var quizController = require('../controllers/quiz_controller');
+var commentController = require('../controllers/comment_controller');
 
 console.log("Router. Iniciando ...");
 
@@ -28,11 +29,17 @@ router.param("quizId",      quizController.load); // autoload :quizId
 router.get('/quizes',                       quizController.index);
 router.get('/quizes/:quizId(\\d+)',         quizController.show);
 router.get('/quizes/:quizId(\\d+)/answer',  quizController.answer);
+// creación de preguntas
 router.get('/quizes/new',                   quizController.new);
 router.post('/quizes/create',               quizController.create);
+// modificación de preguntas
 router.get('/quizes/:quizId(\\d+)/edit',    quizController.edit);
 router.put('/quizes/:quizId(\\d+)',         quizController.update);
+// borrado de preguntas
 router.delete('/quizes/:quizId(\\d+)',      quizController.destroy);
+// creación de comentarios
+router.get('/quizes/:quizId(\\d+)/comments/new',   commentController.new);
+router.post('/quizes/:quizId(\\d+)/comments',       commentController.create);
 
 router.get('/author',   quizController.author);
 

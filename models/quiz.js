@@ -13,6 +13,9 @@ module.exports = function(sequelize, DataTypes) {
             	type: DataTypes.STRING,
             	validate: { notEmpty: {msg: "-> falta el texto de la respuesta"} }
             },
+            preguntas_falsas: {  // opcional como un array en formato json
+                type: DataTypes.STRING
+            },
             fk_tema: {
             	type: DataTypes.STRING
             }

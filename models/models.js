@@ -49,15 +49,24 @@ var sequelize = new Sequelize(DB_name, user, pwd,
 var quizPath = path.join(__dirname, "quiz");
 var Quiz = sequelize.import(quizPath);
 
+var commentPath = path.join(__dirname, "comment");
+var Comment = sequelize.import(commentPath);
+
 var temaPath = path.join(__dirname, "tema");
 var Tema = sequelize.import(temaPath);
 
+// Relación 1 quiz a muchos comentarios
+Comment.belongsTo(Quiz);
+Quiz.hasMany(Comment);
+
+// Relación 1 Tema a muchos quizes. Indicamos explicitamente la fk
 Quiz.belongsTo(Tema, {foreignKey: 'fk_tema'}); // 
 Tema.hasMany(Quiz);
 
 // exportaciones de referencias a tablas
 exports.Tema = Tema;
 exports.Quiz = Quiz;
+exports.Comment = Comment;
 
 var ejemplosTemas = [
    { alias: "huma", nombre: "Humanidades" },

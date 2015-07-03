@@ -34,8 +34,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Asociación de rutas a sus gestores
 app.use('/', routes);
 
-// Ruta indefinidad. Catch 404 and forward to error handler
+// Ruta indefinida. Catch 404 and forward to error handler
 app.use(function(req, res, next) {
+    console.log(req.request);
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
