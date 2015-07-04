@@ -114,30 +114,12 @@ exports.create = function(req, res) {
     // creamos datos para registrar
     var quizNueva = models.Quiz.build(req.body.quiz);
     
-    try {
-        // probando versión con then
-        quizNueva.validate().then(_validationHandler);
-    } catch (err) {
-        console.log("-- **  AVISO: no funciona Sequelize con 'then'");
-    }
-    
-    // probamos validación de la forma antigua
-    var result = quizNueva.validate();
-    if (result) {
-        // hay errores
-        var errors = [];
-        for (var key in result) {
-            if (result.hasOwnProperty(key)) {
-                var err = {"field": key, message: result[key]};
-                errors.push(err);
-            }
-        }
-        _validationHandler({message: "Pregunta no válida", errors: errors});
-    } else {
-        // no hay errores
-        _validationHandler(null);
-    }
-    
+    // primero validamos
+    quizNueva.validate().then(_validationHandler)        
+        .catch(function(err) {
+            console.log("---- Error Validando nueva quiz. " + err.message);
+        });
+  
     function _validationHandler(err) {
         console.log("result validar " + JSON.stringify(err));
         // comprobamos resulado de validación
@@ -187,29 +169,11 @@ exports.update = function(req, res) {
     
     var editedQuiz = req.quiz;
     
-    try {
-        // probando versión con then
-        editedQuiz.validate().then(_validationHandler);
-    } catch (err) {
-        console.log("-- **  AVISO: no funciona Sequelize con 'then'");
-    }
-    
-    // probamos validación de la forma antigua
-    var result = editedQuiz.validate();
-    if (result) {
-        // hay errores
-        var errors = [];
-        for (var key in result) {
-            if (result.hasOwnProperty(key)) {
-                var err = {"field": key, message: result[key]};
-                errors.push(err);
-            }
-        }
-        _validationHandler({message: "Pregunta no válida", errors: errors});
-    } else {
-        // no hay errores
-        _validationHandler(null);
-    }
+    // primero validamos
+    editedQuiz.validate().then(_validationHandler)
+        .catch(function(err) {
+            console.log("---- Error Validando edición de quiz. " + err.message);
+        });
     
     function _validationHandler(err) {
         console.log("result validar " + JSON.stringify(err));

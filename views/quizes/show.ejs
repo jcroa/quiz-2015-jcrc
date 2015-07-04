@@ -13,8 +13,10 @@
            </a>
         </p>
         <p><strong>Comentarios:</strong></p>
-        <% for(var index in quiz.comments) { %>
-             <p> - <%= quiz.comments[index].texto %></p>
+        <% 
+           var comments = quiz.Comments;
+           for(var index in comments) { %>
+             <p> - <%= comments[index].texto %></p>
         <% } %>
 
 

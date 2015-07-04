@@ -83,9 +83,9 @@ var ejemplosPreguntas = [
 ];
 
 // Creamos e inicializamos tabla de preguntas en la base de datos
-sequelize.sync().success(function() {
+sequelize.sync().then(function() {
     // manejador de evento success de sync(...)
-    Quiz.count().success(function(count) {
+    Quiz.count().then(function(count) {
         // manejador de evento success de count(...)
         if (count===0) {
             // tabla está vacía: Añadimos datos de prueba

@@ -1,4 +1,4 @@
-// Comment Controller
+// Quiz Controller
 
 // Importación de los modelos de datos.
 var models = require("../models/models.js");
@@ -20,12 +20,30 @@ exports.create = function(req, res) {
           QuizId: req.params.quizId
         });
     
-    // primero validamos
-    comment.validate().then(_validationHandler)
-       .catch(function(err) {
-            console.log("----- error interno  Validando comentario " + err.message);
-       });
-
+    try {
+        // probando versión con then
+        comment.validate().then(_validationHandler);
+    } catch (err) {
+        console.log("-- **  AVISO comment: no funciona Sequelize con 'then'");
+    }
+    
+    // probamos validación de la forma antigua
+    var result = comment.validate();
+    if (result) {
+        // hay errores
+        var errors = [];
+        for (var key in result) {
+            if (result.hasOwnProperty(key)) {
+                var err = {"field": key, message: result[key]};
+                errors.push(err);
+            }
+        }
+        _validationHandler({message: "Comentario no debe estar vacío", errors: errors});
+    } else {
+        // no hay errores
+        _validationHandler(null);
+    }
+    
     function _validationHandler(err) {
         console.log("result validar comentario " + JSON.stringify(err));
         // comprobamos resulado de validación
@@ -36,8 +54,7 @@ exports.create = function(req, res) {
             // datos de la pregunta correctos. Procedemos a guardar
             comment.save().then(
                 function() {
-                    console.log("-- comentario guardado: " + comment.texto + " en quizID: " + comment.QuizId);
-                    res.redirect("/quizes/"+ req.params.quizId); // 
+                    res.redirect("/quizes/"+ req.params.quizId); // r
                 }
             ); 
         }
