@@ -72,6 +72,18 @@ table  {
    text-align: left;
 }
 
+.right {
+    float: right;
+    color: #f0f0f0;
+}
+.right a {
+    color: #f0f0f0;
+}
+.right a:visited,
+.right a:hover {
+    color: #f0f0f0;
+}
+
 p.title2 {
     color: #505060;
     padding-bottom: .8em;

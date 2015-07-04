@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var partials  = require("express-partials");
 var methodOverride = require("method-override");
+var session = require("express-session");
 
 // Importación de enrutadores
 var routes = require('./routes/index');
@@ -27,11 +28,26 @@ app.use(favicon(__dirname + '/public/favicon.png'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-app.use(cookieParser());
+app.use(cookieParser('' + new Date()));
+app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Asociación de rutas a sus gestores
+// Helpers dinámicos
+app.use(function(req, res, next) {
+    // guardar path en session.redir para después de login
+    if (!req.path.match(/\/login|\/logout/)) {
+        req.session.redir = req.path;
+        console.log("página normal");
+    } else {
+        console.log("login o logout");
+    }
+    // hacer visible req.sesson en las vistas
+    res.locals.session = req.session;
+    next();
+});
+    
+// Culaquier ruta será gestionada por routes.js
 app.use('/', routes);
 
 // Ruta indefinida. Catch 404 and forward to error handler
