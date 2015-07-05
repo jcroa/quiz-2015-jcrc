@@ -11,9 +11,8 @@ exports.load = function(req, res, next, quizId) {
             where: { id: Number(quizId) },
             include: [{ model: models.Comment }]
         }
-    ).then(
-        // Manejo de evento success de find()
-        function(quiz) {
+    ).then(function(quiz) {
+            // Manejo de evento success de find()
             if (quiz) {
                 // agregamos al objeto Request:
                 req.quiz = quiz;
@@ -34,9 +33,8 @@ exports.load = function(req, res, next, quizId) {
                     }
                 ).catch(
                    function(err) { next(err); }
-                );
+                );  
                 
-               
             } else {
                 next(new Error("No existe quizId=" + quizId));
             }

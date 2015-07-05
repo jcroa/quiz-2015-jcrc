@@ -39,6 +39,24 @@ header, nav, section, footer   {
   font-size: .9em; 
   color: #b0b0a0;
 }
+#page-wrap  #pre-title { 
+  border-style: solid;
+  border-width: 0px;
+  border-bottom-width: 1px;
+  border-bottom-color: #c0c0b0;
+  background-color: #f0f0f0;
+  padding-bottom:.5em;  
+}
+#page-wrap  div#comentarios { 
+  margin: 1em;
+  padding: 1em;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #c0c0b0;
+}
+#page-wrap  div#comentarios p.title{ 
+  color: #9090a0;
+}
 
 #page-wrap  > footer.main  { 
   background: #303040; 
@@ -102,6 +120,11 @@ form p.enunciado {
    padding: 1em;
 }
 
+/* contenedor de botón especial para PUT o DELETE */
+#page-wrap form.admin-button {
+   display:inline-block;
+}
+
 #page-wrap .admin-button button{
    border-style: none;
    text-decoration: underline;
@@ -115,6 +138,13 @@ form p.enunciado {
 
 #page-wrap .admin-button button:hover {
    color:#2042b0;
+}
+
+#page-wrap #comentario-list > div {
+   max-width: 600px;
+   padding:.4em;
+   margin: auto;
+   text-align: left;
 }
 
 #ErrorMsgs {

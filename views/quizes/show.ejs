@@ -1,22 +1,36 @@
         
-        <p>Tema : <%= quiz._tema ? quiz._tema.nombre : "Otro" %> </p>
-        <form style="padding-top: 2em" method="get" action="<%= quiz.id %>/answer">        
-          Pregunta: 
+        <p id="pre-title">Tema : <%= quiz._tema ? quiz._tema.nombre : "Otro" %> </p>
+        <form method="get" action="<%= quiz.id %>/answer">        
+          <span>Pregunta: </span>
           <p class="enunciado"> <%= quiz.pregunta %> </p>
+          
           <input type="text" name="respuesta" value="" placeholder="Responda aquí"/>
           <input type="submit" value="Enviar">
+          
         </form>
 
-        <p>
-           <a href="/quizes/<%= quiz.id %>/comments/new">
-              <button>Nuevo comentario</button>
-           </a>
-        </p>
-        <p><strong>Comentarios:</strong></p>
-        <% 
-           var comments = quiz.Comments;
-           for(var index in comments) { %>
-             <p> - <%= comments[index].texto %></p>
-        <% } %>
+        <div id="comentarios">
+            <p class="title">Comentarios:</p>
+            <div id="comentario-list">
+            <% for(var index in quiz.Comments) {
+                   var comment = quiz.Comments[index];
+                   if (comment.publicado || session.user) { %>
+                      <div> <span>- <%= comment.texto %> </span>
+                      <% if (session.user && !comment.publicado) { %>
+                        <form class="admin-button" method="post" 
+                           action="/quizes/<%= quiz.id %>/comments/<%= comment.id%>/publish?_method=put">
+                           <button type="submit">Publicar</button>
+                        </form>
+                      <% } %>
+                      </div>                      
+                   <% } %>
+            <% } %>
+            <p>
+               <a href="/quizes/<%= quiz.id %>/comments/new">
+                  <button>Nuevo comentario</button>
+               </a>
+            </p>
+            </div>
+        </div>
 
 
