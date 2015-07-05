@@ -1,0 +1,8 @@
+
+mkdir certs
+cd certs
+openssl genrsa -out quiz-2015-jcrc-key.pem 2048
+openssl req -new -sha256 -key quiz-2015-jcrc-key.pem -out quiz-2015-jcrc-csr.pem -config /usr/local/ssl/openssl.cnf
+openssl x509 -req -in quiz-2015-jcrc-csr.pem -signkey quiz-2015-jcrc-key.pem -out quiz-2015-jcrc-cert.pem
+
+PWD: "jcrc_dosmilquince"
