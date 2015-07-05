@@ -3,6 +3,17 @@
 // Importación de los modelos de datos.
 var models = require("../models/models.js");
 
+// MW de autorización de accesos http restringidos
+exports.loginRequired = function(req, res, next) {
+    if (req.session.user) {
+        console.log("Acción restringida autorizada: " + req.url);
+        next();
+    } else {
+        console.log("Acción restringida no autorizada sin sesiión: " + req.url);
+        res.redirect("/login");
+    }
+};
+
 // GET /login  formulario de login
 exports.new = function(req, res) {
     var errors = req.session.errors || [];

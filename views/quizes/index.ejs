@@ -15,6 +15,7 @@
                <td class="item-pregunta">
                   <a href="/quizes/<%= quiz.id %>"><%= quiz.pregunta %> </a>
                </td>
+               <% if (session.user) { %>
                <td class="admin-button">
                   <form method="get" action="/quizes/<%= quiz.id %>/edit">
                      <button type="submit">editar</button>
@@ -27,15 +28,18 @@
                        borrar</button>
                   </form>
                </td>
+               <% } %>
             </tr>
         <% } %>
-            <tr>
+        <% if (session.user) { %>
+            <tr style="padding-top: 1em">
                <td> 
                   <a href="/quizes/new">
                      <button type="button">Crear pregunta</button>
                   </a>
                 </td>
             </tr>
+        <% } %>
         </table>
 
 
