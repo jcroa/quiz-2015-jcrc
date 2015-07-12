@@ -42,10 +42,36 @@ app.use(function(req, res, next) {
     } else {
         console.log("login o logout");
     }
-    // hacer visible req.sesson en las vistas
+    // hacer visible req.session en las vistas
     res.locals.session = req.session;
     next();
 });
+  
+ // autologout 
+app.use(function(req, res, next) {
+    // guardar path en session.redir para después de login
+    if (req.session.user) {
+        console.log("- - - - - hay sesión");
+        var nowSeconds = new Date().getTime() / 1000;
+        var lastTimeSeconds = req.session.lastTimeSeconds;
+        if (lastTimeSeconds) {
+            var lapTime = nowSeconds - lastTimeSeconds;
+            console.log("- - - - - lap time: " + lapTime);
+            if (lapTime >= 20) {
+                delete req.session.lastTimeSeconds;
+                req.session.destroy();
+                res.redirect("/login");
+                console.log("- - - - - sesión ha expirado tras : " + (nowSeconds - lastTimeSeconds) + " segs");
+                return;
+            }
+        }
+        req.session.lastTimeSeconds = nowSeconds;
+        console.log("- - - - - nueva marca temporal: " + req.session.lastTimeSeconds);
+    } else {
+        console.log("- - - - - NO hay sesión");
+    }
+    next();
+});  
     
 // Culaquier ruta será gestionada por routes.js
 app.use('/', routes);
