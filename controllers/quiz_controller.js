@@ -212,7 +212,3 @@ exports.destroy = function(req, res) {
     );
  };
     
-exports.author = function(req, res) {
-   // public/author.ejs
-   res.render('author', {});
-};

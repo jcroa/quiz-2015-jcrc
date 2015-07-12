@@ -1,8 +1,14 @@
 
 mkdir certs
 cd certs
+
+// generación de clave privada
 openssl genrsa -out quiz-2015-jcrc-key.pem 2048
+
+// generación de csr, petición de certificación para la clave anterior
 openssl req -new -sha256 -key quiz-2015-jcrc-key.pem -out quiz-2015-jcrc-csr.pem -config /usr/local/ssl/openssl.cnf
+
+// genración de certificado cert usando petición  amterior y firmando con key (también la clave original)
 openssl x509 -req -in quiz-2015-jcrc-csr.pem -signkey quiz-2015-jcrc-key.pem -out quiz-2015-jcrc-cert.pem
 
-PWD: "jcrc_dosmilquince"
+// PWD: "jcrc_dosmilquince"

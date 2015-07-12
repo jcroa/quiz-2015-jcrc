@@ -9,6 +9,7 @@ var router = express.Router();
 var quizController = require('../controllers/quiz_controller');
 var commentController = require('../controllers/comment_controller');
 var sessionController = require('../controllers/session_controller');
+var miscController = require('../controllers/misc_controller');
 
 console.log("Router. Iniciando ...");
 
@@ -50,7 +51,10 @@ router.post('/quizes/:quizId(\\d+)/comments',       commentController.create);
 router.put('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish',  
                                             sessionController.loginRequired, commentController.publish);
 
-router.get('/author',   quizController.author);
+// otros.
+router.get('/author',                       miscController.author);
+router.get('/statistics',                   miscController.statistics);
+
 
 module.exports = router;
 

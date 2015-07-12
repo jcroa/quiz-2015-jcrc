@@ -151,3 +151,40 @@ form p.enunciado {
     color: #a00000;
     font-size: smaller;
 }
+
+form#login {
+   width: 26rem;
+   margin:auto;
+}
+form#login label{
+   display: inline-block;
+   width: 12rem;
+   min-width: 12rem;
+   text-align: right;
+}
+form#login input{
+   width: 12rem;
+}
+form#login div.actions {
+   margin-top: 2em;
+   width: 16rem;
+   display: inline-block;
+}
+form#login div.actions input {
+   width: 20rem;
+}
+
+div.statistics {
+}
+div.statistics p {
+   padding:8px;
+}
+div.statistics td.title {
+    text-align: left;
+    padding: .4em;
+}
+div.statistics td.value {
+    text-align: right;
+    padding-left: 2em;
+    padding-right: 1em;
+}

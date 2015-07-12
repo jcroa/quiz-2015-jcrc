@@ -1,0 +1,22 @@
+
+<div class="statistics"> 
+  <p>Estadísticas de Quiz</p>
+  <table>
+    <tr>
+       <td class="title">Número de preguntas</td><td class="value"><%= quizCount %></td>
+    </tr>
+    <tr>
+       <td class="title">Número de comentarios totales</td><td class="value"><%= commentCount %></td>
+    </tr>
+    <tr>
+       <td class="title">Número medio de comentarios por pregunta</td><td class="value"><%= commentsPerQuiz %></td>
+    </tr>
+    <tr>
+       <td class="title">Número de preguntas sin comentarios</td><td class="value"><%= (quizCount - commentedQuizCount) %></td>
+    </tr>
+    <tr>
+       <td class="title">Número de preguntas con comentarios</td><td class="value"><%= commentedQuizCount %></td>
+    </tr>
+  </table>
+</div>
+
