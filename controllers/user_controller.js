@@ -18,7 +18,7 @@ exports.autenticar = function(login, password, callback) {
             callback(new Error("Password errónea"));
         }
     } else {
-        callback(new Error("No exsite el usuario"));
+        callback(new Error("No existe el usuario"));
     }
 };
 

@@ -40,7 +40,11 @@ exports.create = function(req, res) {
         // La sesión se define por la existencia de: req.sessoin.user
         req.session.user = {id:user.id, username:user.username};
         // redirección a path anterior a login
-        res.redirect(req.session.redir.toString()); 
+        if (req.session.redir) {
+            res.redirect(req.session.redir.toString()); 
+        } else {
+            res.redirect("/"); 
+        }
     });
 };
 

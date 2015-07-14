@@ -49,6 +49,7 @@ app.use(function(req, res, next) {
   
  // autologout 
 app.use(function(req, res, next) {
+    var inactivityTimeout = 120;
     // guardar path en session.redir para después de login
     if (req.session.user) {
         console.log("- - - - - hay sesión");
@@ -57,7 +58,7 @@ app.use(function(req, res, next) {
         if (lastTimeSeconds) {
             var lapTime = nowSeconds - lastTimeSeconds;
             console.log("- - - - - lap time: " + lapTime);
-            if (lapTime >= 20) {
+            if (lapTime >= inactivityTimeout) {
                 delete req.session.lastTimeSeconds;
                 req.session.destroy();
                 res.redirect("/login");

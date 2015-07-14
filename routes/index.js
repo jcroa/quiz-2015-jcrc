@@ -55,7 +55,6 @@ router.put('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish',
 router.get('/author',                       miscController.author);
 router.get('/statistics',                   miscController.statistics);
 
-
 module.exports = router;
 
 console.log("Router. OK");
