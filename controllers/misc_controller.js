@@ -17,7 +17,8 @@ exports.statistics = function(req, res) {
     // primera consulta.
     models.Quiz.findAll({attributes: ['id']})
         .then(quizResult); 
-       
+    
+    // Quiz.findAll : ok    
     function quizResult(rows) {
         data.quizIds = rows;
         data.quizCount = rows.length;
@@ -28,7 +29,8 @@ exports.statistics = function(req, res) {
             })
         .then(commentResult);
     }
-     
+    
+    // Comment.findAll : ok
     function commentResult(rows) {
         var ids = [];
         data.commentCount = rows.length;
@@ -50,6 +52,5 @@ exports.statistics = function(req, res) {
         console.log(rows.length);
         res.render('statistics', data);
     }
-    
 
 };
