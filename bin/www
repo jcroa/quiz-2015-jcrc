@@ -1,22 +1,23 @@
 #!/usr/bin/env node
+
 var debug = require('debug')('quiz');
 var app = require('../app');
 var fs = require("fs");
 var https = require("https");
+var PORT = 8088;
 
 var options = {
     key: fs.readFileSync("certs/quiz-2015-jcrc-key.pem").toString(),
     cert: fs.readFileSync("certs/quiz-2015-jcrc-cert.pem").toString()
 };
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || PORT);
 
 var server = app.listen(app.get('port'), function() {
-  debug('Express server listening on port ' + server.address().port);
+    debug('Express server listening on port ' + server.address().port);
 });
 
 var serverSecure = https.createServer(options, app);
 serverSecure.listen(8443, function() {
-  debug('Express https-server listening on port ' + serverSecure.address().port);
+    debug('Express https-server listening on port ' + serverSecure.address().port);
 });
-
