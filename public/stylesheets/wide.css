@@ -1,9 +1,13 @@
 /* Estilos añadidos para pantalla ancha como la de PCs y televisores */
 
-body { background: #999; }
+body {
+}
 
 #page-wrap:after { content: "Wide Layout"; }
-
+#page-wrap { 
+  min-height: 30rem;
+}
+  
 /* Panel de navegación a la izquierda */
 #page-wrap  nav#n1  { 
   float: left; 

@@ -4,7 +4,9 @@
   margin: 0; 
   padding: 0;
 }
-
+html, body {
+   height: 100%;
+}
 body  { 
   font: 16px Verdana, serif; 
 }
@@ -15,7 +17,10 @@ header, nav, section, footer   {
 }
 
 #page-wrap { 
-  margin: 2% auto; 
+  position: relative;
+  margin: auto; 
+  height: 100%;
+  margin-bottom: -5rem;
   color: white; 
 }
 
@@ -76,6 +81,14 @@ header, nav, section, footer   {
 #page-wrap > section.main,
 #page-wrap > nav.main  { 
  padding-bottom: 2em;
+}
+
+#page-wrap > footer.main  {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    margin: auto;
+    bottom: 0px;
 }
 
 nav span  { 
