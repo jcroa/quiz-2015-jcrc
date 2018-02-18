@@ -1,4 +1,7 @@
+// móoulos externos
 var express = require('express');
+
+// router es el objeto exportado en ete fichero index.js
 var router = express.Router();
 
 ///

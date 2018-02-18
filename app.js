@@ -27,9 +27,13 @@ app.use(partials());
 app.use(favicon(__dirname + '/public/favicon.png'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser('' + new Date()));
-app.use(session());
+app.use(session({
+    secret: 'quiz-2018',
+    resave: true,
+    saveUninitialized: true
+}));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 

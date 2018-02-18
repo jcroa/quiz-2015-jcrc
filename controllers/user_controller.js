@@ -1,6 +1,6 @@
 // User Controller
 
-var users = {
+var userLogins = {
     admin: { id:1, username:"admin", password:"1234"},
     pepe: { id:2, username:"pepe", password:"5678"},
     ana: { id:3, username:"ana", password:"a"},
@@ -9,7 +9,7 @@ var users = {
 
 // GET /quizes/:quizId/comments/new 
 exports.autenticar = function(login, password, callback) {
-    var user = users[login];
+    var user = userLogins[login];
     if (user) {
         if (password === user.password) {
             callback(null, user);

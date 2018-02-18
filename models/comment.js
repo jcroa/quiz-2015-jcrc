@@ -2,6 +2,10 @@
 // Definición del modelos de datos de Quiz
 
 // Quiz: Tabla de temas
+//  Comment
+//  - texto as STRING
+//  - publicado as BOOLEAN
+//
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define("Comment",
         {

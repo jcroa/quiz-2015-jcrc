@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
 var debug = require('debug')('quiz');
-var app = require('../app');
 var fs = require("fs");
 var https = require("https");
+
+// web app
+var app = require('../app');
+
 var PORT = 8088;
 
 var options = {

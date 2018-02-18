@@ -4,18 +4,17 @@
 
 // Importación de módulos
 var path = require("path");
+var Sequelize = require("sequelize"); // modelo ORM
 
+// int db configuration
 var db = process.env.DATABASE_URL || 'sqlite://:@:/';
-if (!process.env.DATABASE_URL) {
-    console.info("no env variable DATABASE_URL found");
-    process.env.DATABASE_URL = 'sqlite://:@:/'
-}
-
-console.log("models.js - DATABASE_URL : " + process.env.DATABASE_URL);
-
 // Postgres DATABASE_URL = postgres://rkjqotjtqcmjmn:SnJ09qa_ABejE1i1SjMBiqU24n@ec2-54-83-43-118.compute-1.amazonaws.com:5432/d578grmpsb38gc
 // SQLite   DATABASE_URL = sqlite://:@:/
-var url = process.env.DATABASE_URL.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
+var storage = process.env.DATABASE_STORAGE || 'sqliteStorage/quiz';
+
+console.log("models.js - DATABASE_URL : " + db);
+
+var url = db.match(/(.*)\:\/\/(.*?)\:(.*)@(.*)\:(.*)\/(.*)/);
 var DB_name = (url[6] || null);
 var user = (url[2] || null);
 var pwd = (url[3] || null);
@@ -23,31 +22,27 @@ var protocol = (url[1] || null);
 var dialect = (url[1] || null);
 var port = (url[5] || null);
 var host = (url[4] || null);
-var storage = process.env.DATABASE_STORAGE;
 
+// sequelize options
 var dbOptions = {
     dialect: protocol,
     protocol: protocol,
     port: port,
     host: host,
     storage: storage, // solo SQLite (.env)
+    operatorsAliases: false, 
     omitNull: true // solo Postgres
 };
-
 console.log("models.js - DbOptions: \n" + JSON.stringify(dbOptions));
 
-// Carga modelo ORM
-var Sequelize = require("sequelize"); // modelo ORM
-
 // Usar BBDD SQLite o Postgres
-var sequelize = new Sequelize(DB_name, user, pwd, {
-    dialect: protocol,
-    protocol: protocol,
-    port: port,
-    host: host,
-    storage: storage, // solo SQLite (.env)
-    omitNull: true // solo Postgres
-});
+var sequelize;
+try {
+    sequelize = new Sequelize(DB_name, user, pwd, dbOptions);
+} catch (err) {
+    console.log("FATAL: Error preparing database access" , err);
+    throw new Error("FATAL: Error preparing database access", err);
+}
 
 // Importar la definición de la tabla Quiz en quiz.js
 var quizPath = path.join(__dirname, "quiz");

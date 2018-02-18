@@ -108,37 +108,38 @@ exports.new = function(req, res) {
 
 // POST /quizes/create  añade una nueva pregunta a la base de datos
 exports.create = function(req, res) {
-    console.log("------ Validando " + JSON.stringify(req.body.quiz));
+    console.log("quiz_controller - Validando " + JSON.stringify(req.body.quiz));
     // creamos datos para registrar
     var quizNueva = models.Quiz.build(req.body.quiz);
     
     // primero validamos
-    quizNueva.validate().then(_validationHandler)        
+    quizNueva.validate()
+        .then(_validationHandler)        
         .catch(function(err) {
-            console.log("---- Error Validando nueva quiz. " + err.message);
+            console.log("quiz_controller - Error Validando nueva quiz. " + err.message);
         });
   
-    function _validationHandler(err) {
-        console.log("result validar " + JSON.stringify(err));
+    function _validationHandler(result) {
+        console.log("quiz_controller - Result validar " + JSON.stringify(result));
         // comprobamos resulado de validación
-        if (err) {
+        if (result.errors) {
             // existen datos no válidos.
             models.Tema.findAll().then(
                 // Manejo de evento success de find()
                 function(rows) {
-                    res.render('quizes/new', {quiz: quizNueva, temas: rows, errors: err.errors });
+                    res.render('quizes/new', {quiz: quizNueva, temas: rows, errors: result.errors });
                 }
             );
         } else {
             // datos de la pregunta correctos. Procedemos a guardar
             quizNueva.save( 
                 // solo estos dos campos
-                {fields:["pregunta", "respuesta", "fk_tema"]}
-            ).then(
-                function() {
-                    res.redirect("/quizes"); // redirección a lista de preguntas
-                }
-            ); 
+                { fields: [ "pregunta", "respuesta", "fk_tema" ]}
+            ).then(function() {
+                res.redirect("/quizes"); // redirección a lista de preguntas
+            }).catch(function(err) {
+                console.log("quiz_controller - Error interno guardando quiz válida. ", quizNueva, err);
+            }); 
         }
     }
     

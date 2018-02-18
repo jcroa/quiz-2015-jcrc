@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Quiz Server",
-            "program": "${workspaceFolder}\\bin\\www"
+            "program": "${workspaceRoot}\\bin\\www"
         }
     ]
 }
