@@ -10,15 +10,18 @@ var userLogins = {
 // GET /quizes/:quizId/comments/new 
 exports.autenticar = function(login, password, callback) {
     var user = userLogins[login];
+    console.log("user_controller - autenticar : " + login + " " + password);
     if (user) {
         if (password === user.password) {
+            console.log("user_controller - autenticar : ACEPTADO " + login + " " + password);
             callback(null, user);
         } else {
-            console.log("no vale [" + password + "] para usuario " + user.username);
-            callback(new Error("Password errónea"));
+            console.log("user_controller - autenticar : no vale [" + password + "] para usuario " + login);
+            callback(new Error("Usuario o Password errónea"));
         }
     } else {
-        callback(new Error("No existe el usuario"));
+        console.log("user_controller - autenticar : No existe usuario " + login + " " + password);
+        callback(new Error("Usuario o Password errónea"));
     }
 };
 

@@ -6,10 +6,10 @@ var models = require("../models/models.js");
 // MW de autorización de accesos http restringidos
 exports.loginRequired = function(req, res, next) {
     if (req.session.user) {
-        console.log("Acción restringida autorizada: " + req.url);
+        console.log("session_controller - Acción restringida autorizada: " + req.url);
         next();
     } else {
-        console.log("Acción restringida no autorizada sin sesiión: " + req.url);
+        console.log("session_controller - Acción restringida no autorizada sin sesiión: " + req.url);
         res.redirect("/login");
     }
 };
@@ -18,7 +18,7 @@ exports.loginRequired = function(req, res, next) {
 exports.new = function(req, res) {
     var errors = req.session.errors || [];
     req.session.errors = {};
-    console.log("formulario de login");
+    console.log("session_controller - new : formulario de login");
     res.render('sessions/new', {errors: errors });
 };
 
@@ -28,11 +28,12 @@ exports.create = function(req, res) {
     var login = req.body.login;
     var password = req.body.password;
     
-    console.log("-- Iniciando sesión con: " + login);
+    console.log("session_controller - create : Iniciando sesión con: " + login);
     var userController = require("./user_controller");
     userController.autenticar(login, password, function(error, user) {
         if (error) {
-            req.session.errors = [{message: "Se ha producido un error: " + error}];
+            var msg = (error && error.message) || "Error no esperado";
+            req.session.errors = [{ message: msg }];
             res.redirect("/login");
             return;
         }
@@ -50,7 +51,7 @@ exports.create = function(req, res) {
 
 // DELETE /logout  destruir sesión
 exports.destroy = function(req, res) {
-    console.log("sesión finalizada pàra " + req.session.user);
+    console.log("session_controller - destroy : sesión finalizada pàra " + req.session.user);
     delete req.session.user;
     res.redirect(req.session.redir.toString());
 };

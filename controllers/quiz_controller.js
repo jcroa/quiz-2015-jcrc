@@ -3,9 +3,9 @@
 // Importación de los modelos de datos.
 var models = require("../models/models.js");
 
-// Autoload - factoriza el c´çodigo si ruta incluye :quizId
+// Autoload - factoriza el código si ruta incluye :quizId
 exports.load = function(req, res, next, quizId) {
-    console.log("load - buscando quizId = " + quizId + " . y comentarios asociados");
+    console.log("quiz_controller - load : buscando quizId = " + quizId + " . y comentarios asociados");
     models.Quiz.find(
         {
             where: { id: Number(quizId) },
@@ -16,10 +16,12 @@ exports.load = function(req, res, next, quizId) {
             if (quiz) {
                 // agregamos al objeto Request:
                 req.quiz = quiz;
-                console.log("load - encontrado " + quiz.pregunta + 
+                console.log("quiz_controller - load : encontrado " + quiz.pregunta + 
                     " comments " + JSON.stringify(quiz));
                 
-                models.Tema.find({ where: { alias: quiz.fk_tema } }).then(
+                models.Tema.find(
+                    { where: { alias: quiz.fk_tema } }
+                ).then(
                     function(row) {
                         if (!row) {
                             tema = {alias:null, nombre: "Otros"};
@@ -28,14 +30,16 @@ exports.load = function(req, res, next, quizId) {
                         }
                         // agregamos a quiz info sobre el tema
                         quiz._tema = row;
-                        console.log("load - tema  " + (quiz._tema && quiz._tema.nombre));
+                        console.log("quiz_controller - load : tema  " + (quiz._tema && quiz._tema.nombre));
                         next();
                     }
                 ).catch(
-                   function(err) { next(err); }
+                   function(err) { 
+                       next(err); 
+                    }
                 );  
-                
             } else {
+                console.log("quiz_controller - load : ERROR No existe  "  + quizId);
                 next(new Error("No existe quizId=" + quizId));
             }
         }   
@@ -58,12 +62,13 @@ exports.index = function(req, res) {
         filter = { 
             where: [" pregunta like ?", '%' + containing + '%' ],
             order: "pregunta ASC" };
-        console.log("index - preguntas con filtro: " + containing);
+        console.log("quiz_controller - index : preguntas con filtro: " + containing);
     } else {
-        console.log("index - preguntas sin filtro");
+        console.log("quiz_controller - index : preguntas sin filtro");
     }
     models.Quiz.findAll(filter).then(function(quizes) {
         // Manejo de evento success de findAll()
+        console.log("quiz_controller - index : found " + (quizes && quizes.length));
         res.render('quizes/index', { quizes: quizes, filter: text, errors: [] });
     });
 };
@@ -71,8 +76,8 @@ exports.index = function(req, res) {
 // GET /quizes/:id
 exports.show = function(req, res) {
     // previo load
-    console.log("Controller: pregunta pedida: " + req.quiz.id);
-    console.log("Controller: tema pedido: " + (req.quiz._tema && req.quiz._tema.nombre));
+    console.log("quiz_controller - show - pregunta pedida: " + req.quiz.id);
+    console.log("quiz_controller - show - tema pedido: " + (req.quiz._tema && req.quiz._tema.nombre));
     
     res.render('quizes/show', {quiz: req.quiz, errors: [] });
 };
@@ -80,12 +85,15 @@ exports.show = function(req, res) {
 // GET /quizes/answer
 exports.answer = function(req, res) {
     // previo load
-    var resultado = 'Incorrecto';
+    var resultado;
+    console.log("quiz_controller - answer : Comparando entrada [" + req.quiz.respuesta + 
+        "] con esperado [" + req.query.respuesta + "]");
     if (req.query.respuesta === req.quiz.respuesta) {
         resultado = 'Correcto';
-        console.log("Correcto:.  [" + req.quiz.respuesta + "]");
+        console.log("quiz_controller - answer : Correcto:.  [" + req.quiz.respuesta + "]");
     } else {
-        console.log("Incorrecto:. No es : [" + req.query.respuesta + 
+        resultado = 'Incorrecto';
+        console.log("quiz_controller - answer : Incorrecto:. No es : [" + req.query.respuesta + 
             "]  Era: [" + req.quiz.respuesta + "]");
     }
     res.render('quizes/answer', {quiz: req.quiz, respuesta: resultado, errors: []});
@@ -160,7 +168,7 @@ exports.edit = function(req, res) {
 
 // GET /quizes/update  modifica una pregunta a la base de datos
 exports.update = function(req, res) {
-    console.log("------ Validando " + JSON.stringify(req.body.quiz));
+    console.log("quiz_controller - Validando " + JSON.stringify(req.body.quiz));
     // creamos datos para registrar
     req.quiz.pregunta = req.body.quiz.pregunta;
     req.quiz.respuesta = req.body.quiz.respuesta;
@@ -171,11 +179,11 @@ exports.update = function(req, res) {
     // primero validamos
     editedQuiz.validate().then(_validationHandler)
         .catch(function(err) {
-            console.log("---- Error Validando edición de quiz. " + err.message);
+            console.log("quiz_controller - Error Validando edición de quiz. " + err.message);
         });
     
     function _validationHandler(err) {
-        console.log("result validar " + JSON.stringify(err));
+        console.log("quiz_controller - result validar " + JSON.stringify(err));
         // comprobamos resulado de validación
         if (err) {
             // existen datos no válidos.
@@ -192,6 +200,7 @@ exports.update = function(req, res) {
                 {fields:["pregunta", "respuesta", "fk_tema"]}
             ).then(
                 function() {
+                    console.log("quiz_controller - GUARDADO : ", fields);
                     res.redirect("/quizes"); // redirección a lista de preguntas
                 }
             ); 

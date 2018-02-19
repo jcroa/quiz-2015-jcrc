@@ -37,53 +37,53 @@ app.use(session({
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Helpers dinámicos
+// Manejador 1. session inicia/sigue/termina
 app.use(function(req, res, next) {
     // guardar path en session.redir para después de login
     if (!req.path.match(/\/login|\/logout/)) {
         req.session.redir = req.path;
-        console.log("página normal");
+        console.log("app:1 - página normal (no login ni logout)");
     } else {
-        console.log("login o logout");
+        console.log("app:1 - login o logout");
     }
     // hacer visible req.session en las vistas
     res.locals.session = req.session;
     next();
 });
   
- // autologout 
+// manejador 2. autologout 
 app.use(function(req, res, next) {
     var inactivityTimeout = 120;
     // guardar path en session.redir para después de login
     if (req.session.user) {
-        console.log("- - - - - hay sesión");
+        console.log("app:2 -: HAY sesión " + (req.session.user && req.session.user.username));
         var nowSeconds = new Date().getTime() / 1000;
         var lastTimeSeconds = req.session.lastTimeSeconds;
         if (lastTimeSeconds) {
             var lapTime = nowSeconds - lastTimeSeconds;
-            console.log("- - - - - lap time: " + lapTime);
+            console.log("app:2 - lap time: " + lapTime);
             if (lapTime >= inactivityTimeout) {
                 delete req.session.lastTimeSeconds;
                 req.session.destroy();
                 res.redirect("/login");
-                console.log("- - - - - sesión ha expirado tras : " + (nowSeconds - lastTimeSeconds) + " segs");
+                console.log("app:2 - sesión ha expirado tras : " + (nowSeconds - lastTimeSeconds) + " segs");
                 return;
             }
         }
         req.session.lastTimeSeconds = nowSeconds;
-        console.log("- - - - - nueva marca temporal: " + req.session.lastTimeSeconds);
+        console.log("app:2 - session : nueva marca temporal: " + req.session.lastTimeSeconds);
     } else {
-        console.log("- - - - - NO hay sesión");
+        console.log("app:2 - session : NO hay sesión");
     }
     next();
 });  
     
-// Culaquier ruta será gestionada por routes.js
+// Manejador 3: Cualquier ruta será gestionada por routes.js
 app.use('/', routes);
 
 // Ruta indefinida. Catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    console.log(req.request);
+    console.log("app - not found : " + req.request);
     var err = new Error('Not Found.');
     err.status = 404;
     next(err);

@@ -9,6 +9,12 @@
             "request": "launch",
             "name": "Launch Quiz Server",
             "program": "${workspaceRoot}\\bin\\www"
+        },        
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Simple Server",
+            "program": "${workspaceRoot}\\bin\\wwwsimple"
         }
     ]
 }

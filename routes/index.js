@@ -3,10 +3,9 @@ var express = require('express');
 
 // router es el objeto exportado en ete fichero index.js
 var router = express.Router();
+module.exports = router;
 
-///
-/// require módulos propios
-///
+console.log("routes/index -  Iniciando ...");
 
 // controladores
 var quizController = require('../controllers/quiz_controller');
@@ -14,16 +13,16 @@ var commentController = require('../controllers/comment_controller');
 var sessionController = require('../controllers/session_controller');
 var miscController = require('../controllers/misc_controller');
 
-console.log("Router. Iniciando ...");
-
 /* GET home page. */
 router.get('/', function(req, res) {
   //  views/index.ejs  más parámetros.
+  console.log("routes/index - home page");
   res.render('index', { title: 'Quiz', errors: [] });
 });
 
 router.get('/quizes/searching', function(req, res) {
   //  quizes/searching.ejs  más parámetros.
+  console.log("routes/index - searching");
   res.render('quizes/searching', {});
 });
 
@@ -34,7 +33,7 @@ router.param("commentId",      commentController.load); // autoload :commentId
 // Definición de rutas de sesiones
 router.get('/login',       sessionController.new);  // formulario login
 router.post('/login',      sessionController.create);  // crear sesión
-router.delete('/logout',   sessionController.destroy); // destruir sesión
+router.delete('/logout',   sessionController.destroy); // finalizar sesión
 
 // Definición de rutas de quizes
 router.get('/quizes',                       quizController.index);
@@ -50,15 +49,13 @@ router.delete('/quizes/:quizId(\\d+)',      sessionController.loginRequired,  qu
 
 // Definición de rutas de comentarios
 router.get('/quizes/:quizId(\\d+)/comments/new',   commentController.new);
-router.post('/quizes/:quizId(\\d+)/comments',       commentController.create);
+router.post('/quizes/:quizId(\\d+)/comments',      commentController.create);
 router.put('/quizes/:quizId(\\d+)/comments/:commentId(\\d+)/publish',  
-                                            sessionController.loginRequired, commentController.publish);
+                                         sessionController.loginRequired, commentController.publish);
 
 // otros.
 router.get('/author',                       miscController.author);
 router.get('/statistics',                   miscController.statistics);
 
-module.exports = router;
-
-console.log("Router. OK");
+console.log("routes/index - Router iniciado. OK");
 
