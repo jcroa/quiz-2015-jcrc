@@ -87,12 +87,12 @@ exports.answer = function(req, res) {
     // previo load
     var resultado;
     console.log("quiz_controller - answer : Comparando entrada [" + req.quiz.respuesta + 
-        "] con esperado [" + req.query.respuesta + "]");
-    if (req.query.respuesta === req.quiz.respuesta) {
-        resultado = 'Correcto';
+        "] con esperado [" + req.query.respuesta + "]");   
+    if (compareTexts(req.query.respuesta, req.quiz.respuesta)) {
+        resultado = 'Correcto: ' + req.query.respuesta;
         console.log("quiz_controller - answer : Correcto:.  [" + req.quiz.respuesta + "]");
     } else {
-        resultado = 'Incorrecto';
+        resultado = 'Incorrecto. No es: ' + req.quiz.respuesta;
         console.log("quiz_controller - answer : Incorrecto:. No es : [" + req.query.respuesta + 
             "]  Era: [" + req.quiz.respuesta + "]");
     }
@@ -222,3 +222,8 @@ exports.destroy = function(req, res) {
     );
  };
     
+ function compareTexts(text1, text2) {
+    text1 = ("" + text1).toLocaleLowerCase();
+    text2 = ("" + text2).toLocaleLowerCase();
+    return text1 === text2;
+ }   
