@@ -3,9 +3,9 @@
 Quiz Game
 =========
 
-npm install
-npm install jshint
-npm install sqlite
+    npm install
+    npm install jshint
+    npm install sqlite
 
 Files
 -----
