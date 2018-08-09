@@ -11,7 +11,8 @@ exports.load = function(req, res, next, quizId) {
             where: { id: Number(quizId) },
             include: [{ model: models.Comment }]
         }
-    ).then(function(quiz) {
+    ).then(
+        function(quiz) {
             // Manejo de evento success de find()
             if (quiz) {
                 // agregamos al objeto Request:
@@ -66,11 +67,13 @@ exports.index = function(req, res) {
     } else {
         console.log("quiz_controller - index : preguntas sin filtro");
     }
-    models.Quiz.findAll(filter).then(function(quizes) {
-        // Manejo de evento success de findAll()
-        console.log("quiz_controller - index : found " + (quizes && quizes.length));
-        res.render('quizes/index', { quizes: quizes, filter: text, errors: [] });
-    });
+    models.Quiz.findAll(filter).then(
+        function(quizes) {
+            // Manejo de evento success de findAll()
+            console.log("quiz_controller - index : found " + (quizes && quizes.length));
+            res.render('quizes/index', { quizes: quizes, filter: text, errors: [] });
+        }
+    );
 };
 
 // GET /quizes/:id
@@ -140,10 +143,10 @@ exports.create = function(req, res) {
             );
         } else {
             // datos de la pregunta correctos. Procedemos a guardar
-            quizNueva.save( 
+            quizNueva.save({ 
                 // solo estos dos campos
-                { fields: [ "pregunta", "respuesta", "fk_tema" ]}
-            ).then(function() {
+                fields: [ "pregunta", "respuesta", "fk_tema" ]
+            }).then(function() {
                 res.redirect("/quizes"); // redirección a lista de preguntas
             }).catch(function(err) {
                 console.log("quiz_controller - Error interno guardando quiz válida. ", quizNueva, err);
