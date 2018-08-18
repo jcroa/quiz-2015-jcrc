@@ -16,6 +16,10 @@ module.exports = function(sequelize, DataTypes) {
             publicado: {
             	type: DataTypes.BOOLEAN,
             	defaultValue: false 
+            },
+            fechaHoraUtc: {
+                type: DataTypes.STRING,
+                defaultValue: '2018/08/08 00:00:00 +00:00'
             }
         });
 };        
